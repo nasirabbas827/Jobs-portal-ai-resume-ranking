@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Resume Ranking - Job Portal{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-ranking-star me-2"></i>
+                    <h2 class="card-title mb-0">Resume Ranking</h2>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><i class="fas fa-user me-2"></i><strong>Name:</strong> {{ parsed_resume.full_name }}</p>
+                    <p class="card-text"><i class="fas fa-envelope me-2"></i><strong>Email:</strong> {{ parsed_resume.email }}</p>
+                    <p class="card-text"><i class="fas fa-phone me-2"></i><strong>Phone:</strong> {{ parsed_resume.phone }}</p>
+                    <p class="card-text"><i class="fas fa-tools me-2"></i><strong>Skills:</strong> {{ parsed_resume.skills }}</p>
+                    <p class="card-text"><i class="fas fa-graduation-cap me-2"></i><strong>Education:</strong><br>{{ parsed_resume.education|linebreaks }}</p>
+                    <p class="card-text"><i class="fas fa-briefcase me-2"></i><strong>Work Experience:</strong><br>{{ parsed_resume.work_experience|linebreaks }}</p>
+                    <p class="card-text"><i class="fas fa-clock me-2"></i><strong>Total Years of Experience:</strong> {{ parsed_resume.years_of_experience }}</p>
+                    <p class="card-text"><i class="fas fa-tags me-2"></i><strong>Keywords:</strong> {{ parsed_resume.keywords }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

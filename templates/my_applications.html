@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}My Applications - Job Portal{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-list-check me-2"></i>
+                    <h2 class="card-title mb-0">My Applications</h2>
+                </div>
+                <div class="card-body">
+                    {% if applications %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col"><i class="fas fa-briefcase me-2"></i>Job Title</th>
+                                    <th scope="col"><i class="fas fa-info-circle me-2"></i>Status</th>
+                                    <th scope="col"><i class="fas fa-calendar-alt me-2"></i>Applied At</th>
+                                    <th scope="col"><i class="fas fa-file-pdf me-2"></i>Resume Used</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for app in applications %}
+                                <tr>
+                                    <td>{{ app.job.title }}</td>
+                                    <td>{{ app.status }}</td>
+                                    <td>{{ app.applied_at|date:"Y-m-d H:i" }}</td>
+                                    <td>{{ app.resume.file_path }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>You haven’t applied to any jobs yet.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

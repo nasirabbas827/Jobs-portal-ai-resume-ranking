@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Job Portal - Find Your Dream Job{% endblock %}
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 mb-3"><i class="fas fa-briefcase me-2"></i>Welcome to Job Portal</h1>
+        <p class="lead mb-4">Connect with top employers or find the perfect candidate for your company. Start your journey today!</p>
+        {% if request.session.user_type == "seeker" %}
+            <p class="mb-4">You are logged in as <strong>Job Seeker</strong>.</p>
+            <a href="{% url 'seeker_home' %}" class="btn btn-primary btn-lg"><i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard</a>
+        {% elif request.session.user_type == "recruiter" %}
+            <p class="mb-4">You are logged in as <strong>Recruiter</strong>.</p>
+            <a href="{% url 'recruiter_home' %}" class="btn btn-primary btn-lg"><i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard</a>
+        {% else %}
+            <p class="mb-4">Join our platform to explore opportunities or hire talent.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-2"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
+            <a href="{% url 'register_seeker' %}" class="btn btn-success btn-lg me-2"><i class="fas fa-user-plus me-2"></i>Register as Job Seeker</a>
+            <a href="{% url 'register_recruiter' %}" class="btn btn-success btn-lg"><i class="fas fa-user-tie me-2"></i>Register as Recruiter</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container my-5">
+    <h2 class="text-center mb-4"><i class="fas fa-star me-2"></i>Why Choose Job Portal?</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-search fa-2x mb-3 text-primary"></i>
+                    <h4 class="card-title">Find Jobs Easily</h4>
+                    <p class="card-text">Browse thousands of job listings tailored to your skills and preferences, with advanced search filters.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-upload fa-2x mb-3 text-primary"></i>
+                    <h4 class="card-title">Upload Your Resume</h4>
+                    <p class="card-text">Showcase your skills and experience with an easy-to-use resume upload and ranking system.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-2x mb-3 text-primary"></i>
+                    <h4 class="card-title">Hire Top Talent</h4>
+                    <p class="card-text">Recruiters can post jobs, manage applications, and connect with qualified candidates effortlessly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action Section -->
+<div class="bg-light py-5">
+    <div class="container text-center">
+        <h3 class="mb-3">Ready to Get Started?</h3>
+        <p class="mb-4">Whether you're seeking your dream job or looking to hire the best, Job Portal is here to help.</p>
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg"><i class="fas fa-briefcase me-2"></i>Explore Jobs Now</a>
+    </div>
+</div>
+{% endblock %}

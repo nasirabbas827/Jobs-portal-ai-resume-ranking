@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Recruiter Dashboard - Job Portal{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <!-- Welcome Section -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="fas fa-user-tie me-2"></i>
+            <h2 class="card-title mb-0">Welcome, {{ recruiter.username }}</h2>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><i class="fas fa-building me-2"></i><strong>Company:</strong> {{ recruiter.company_name }}</p>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h4><i class="fas fa-briefcase me-2"></i>Total Jobs</h4>
+                    <p class="display-5 text-primary">{{ total_jobs }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h4><i class="fas fa-list-check me-2"></i>Total Applications</h4>
+                    <p class="display-5 text-primary">{{ total_applications }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Jobs -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="fas fa-briefcase me-2"></i>
+            <h4 class="card-title mb-0">Recent Jobs</h4>
+        </div>
+        <div class="card-body">
+            {% if jobs %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col"><i class="fas fa-briefcase me-2"></i>Title</th>
+                            <th scope="col"><i class="fas fa-map-marker-alt me-2"></i>Location</th>
+                            <th scope="col"><i class="fas fa-info-circle me-2"></i>Status</th>
+                            <th scope="col"><i class="fas fa-calendar-alt me-2"></i>Posted At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in jobs %}
+                        <tr>
+                            <td>{{ job.title }}</td>
+                            <td>{{ job.location }}</td>
+                            <td>{{ job.get_status_display }}</td>
+                            <td>{{ job.posted_at|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info" role="alert">
+                <i class="fas fa-info-circle me-2"></i>No jobs posted yet.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Available Jobs - Job Portal{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <!-- Search Form -->
+    <h1 class="mb-4 text-primary text-center"><i class="fas fa-search me-2"></i>Search From Available Jobs</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <form method="get" action="" class="input-group shadow-sm">
+                <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-primary"></i></span>
+                <input type="text" name="q" class="form-control border-start-0" placeholder="Search by job title..." value="{{ request.GET.q }}">
+                <input type="text" name="location" class="form-control" placeholder="Search by location..." value="{{ request.GET.location }}">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search me-2"></i>Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <h2 class="mb-4 text-primary"><i class="fas fa-briefcase me-2"></i>Available Jobs</h2>
+
+    <!-- Job Listings -->
+    {% for job in jobs %}
+    <div class="card mb-3 shadow-sm" style="border-radius: 10px;">
+        <div class="card-body d-flex flex-column">
+            <div class="d-flex align-items-center mb-2">
+                <div class="me-3">
+                    <!-- Placeholder for company logo -->
+                    <div class="bg-light rounded" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-building fa-2x text-muted"></i>
+                    </div>
+                </div>
+                <div class="flex-grow-1">
+                    <h4 class="card-title mb-1" style="font-size: 1.25rem;"><a href="#" class="text-dark text-decoration-none">{{ job.title }}</a></h4>
+                    <p class="card-text mb-0"><i class="fas fa-building me-1"></i>{{ job.recruiter.company.name }}</p>
+                    <p class="card-text text-muted mb-0"><i class="fas fa-map-marker-alt me-1"></i>{{ job.location }} • {{ job.get_employment_type_display }}</p>
+                </div>
+            </div>
+            <div class="mt-2">
+                <p class="card-text text-muted small"><i class="fas fa-calendar-alt me-1"></i>Posted {{ job.posted_at|timesince }} ago</p>
+                <p class="card-text"><strong>Description:</strong> {{ job.description|truncatewords:30 }}</p>
+                <p class="card-text"><strong>Requirements:</strong> {{ job.requirements|truncatewords:20 }}</p>
+                <p class="card-text"><strong>Salary Range:</strong> {{ job.salary_range }}</p>
+                <p class="card-text"><strong>Recruiter:</strong> {{ job.recruiter.username }}</p>
+            </div>
+            <div class="mt-3">
+                <form method="post" action="{% url 'apply_job' job.job_id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-2"></i>Easy Apply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info" role="alert">
+        <i class="fas fa-info-circle me-2"></i>No jobs found.
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Custom CSS for LinkedIn-like styling -->
+<style>
+    h1{
+        text-align: center;
+        margin: 30px;
+    }
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+    .input-group .form-control:focus {
+        box-shadow: none;
+        border-color: #0073b1;
+    }
+    .input-group-text {
+        border-color: #ced4da;
+    }
+    .btn-primary {
+        background-color: #0073b1;
+        border-color: #0073b1;
+    }
+    .btn-primary:hover {
+        background-color: #005f8d;
+        border-color: #005f8d;
+    }
+    .text-primary {
+        color: #0073b1 !important;
+    }
+</style>
+{% endblock %}
