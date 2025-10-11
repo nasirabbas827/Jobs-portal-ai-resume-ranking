@@ -328,3 +328,64 @@ def resume_ranking(request):
         messages.success(request, "Resume parsed successfully from latest upload!")
 
     return render(request, "resume_ranking.html", {"parsed_resume": parsed_resume})
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import ParsedResume, Job
+from .job_matching import rank_resume_for_job
+
+
+def match_jobs_for_seeker(request):
+    if 'user_id' not in request.session or request.session.get('user_type') != 'seeker':
+        messages.error(request, "Unauthorized access.")
+        return redirect('login')
+
+    seeker_id = request.session['user_id']
+
+    parsed_resume = ParsedResume.objects.filter(resume__seeker__seeker_id=seeker_id).first()
+    if not parsed_resume:
+        messages.error(request, "You must upload and parse a resume first.")
+        return redirect('seeker_home')
+
+    seeker_resume_dict = {
+        "resume_id": parsed_resume.resume.resume_id,
+        "full_name": parsed_resume.full_name,
+        "email": parsed_resume.email,
+        "skills": parsed_resume.skills,
+        "work_experience": parsed_resume.work_experience,
+        "education": parsed_resume.education,
+        "keywords": parsed_resume.keywords,
+        "years_of_experience": parsed_resume.years_of_experience
+    }
+
+    ranked_jobs = []
+    all_jobs = Job.objects.all()
+
+    for job in all_jobs:
+        job_dict = {
+            "title": job.title,
+            "description": job.description,
+            "requirements": job.requirements,
+            "skills": job.requirements.split(", ") if job.requirements else [],  # Use ", " to avoid splitting on commas within skill names
+            "min_experience": job.min_experience if hasattr(job, "min_experience") else None
+        }
+        score_data = rank_resume_for_job(job_dict, seeker_resume_dict)
+        # Only include jobs with a final score >= 0.5
+        if score_data.get("final_score", 0) >= 0.5:
+            ranked_jobs.append({
+                "job": job,
+                "score": score_data.get("final_score", 0),
+                "matched_skills": score_data.get("matched_skills", []),
+                "technical_skill_score": score_data.get("technical_skill_overlap", 0),
+                "soft_skill_score": score_data.get("soft_skill", 0),
+                "experience_score": score_data.get("experience_score", 0),
+                "keyword_relevance_score": score_data.get("keyword_relevance", 0),
+                "semantic_sim_score": score_data.get("semantic_sim", 0)
+            })
+
+    ranked_jobs.sort(key=lambda x: x["score"], reverse=True)
+
+    return render(request, "matched_jobs.html", {
+        "ranked_jobs": ranked_jobs
+    })

@@ -3,6 +3,7 @@ import fitz  # PyMuPDF
 import docx2txt
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+
 def extract_text_from_file(file_path):
     if file_path.endswith(".pdf"):
         text = ""

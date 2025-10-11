@@ -19,6 +19,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col"><i class="fas fa-briefcase me-2"></i>Title</th>
+                                    <th scope="col"><i class="fas fa-tools me-2"></i>Skills</th>
                                     <th scope="col"><i class="fas fa-suitcase me-2"></i>Type</th>
                                     <th scope="col"><i class="fas fa-info-circle me-2"></i>Status</th>
                                     <th scope="col"><i class="fas fa-map-marker-alt me-2"></i>Location</th>
@@ -29,6 +30,7 @@
                                 {% for job in jobs %}
                                 <tr>
                                     <td>{{ job.title }}</td>
+                                    <td>{{ job.skills }}</td>
                                     <td>{{ job.get_employment_type_display }}</td>
                                     <td>{{ job.status }}</td>
                                     <td>{{ job.location }}</td>

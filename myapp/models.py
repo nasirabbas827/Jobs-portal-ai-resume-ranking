@@ -66,6 +66,14 @@ class Job(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     requirements = models.TextField()
+
+    # ✅ NEW FIELD: comma-separated skills
+    skills = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Enter skills as comma-separated values, e.g., Python, Django, AWS"
+    )
+
     location = models.CharField(max_length=255)
     salary_range = models.CharField(max_length=255, blank=True, null=True)
     employment_type = models.CharField(max_length=20, choices=JOB_TYPES)

@@ -70,11 +70,17 @@ class CompanyForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['title', 'description', 'requirements', 'location', 'salary_range', 'employment_type']
+        fields = ['title', 'description', 'requirements', 'skills', 'location', 'salary_range', 'employment_type']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
             'requirements': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'skills': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'e.g. Python, Django, AWS'
+                }
+            ),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'salary_range': forms.TextInput(attrs={'class': 'form-control'}),
             'employment_type': forms.Select(attrs={'class': 'form-select'}),

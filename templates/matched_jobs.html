@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Matched Jobs{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Jobs Matched For You</h2>
+
+    {% if ranked_jobs %}
+        {% for item in ranked_jobs %}
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h4>{{ item.job.title }}</h4>
+                    <p><strong>Company:</strong> {{ item.job.recruiter.company.name }}</p>
+                    <p><strong>Location:</strong> {{ item.job.location }}</p>
+                    <p><strong>Match Score:</strong> <span class="match-score" data-score="{{ item.score|floatformat:2 }}">{{ item.score|floatformat:2 }}</span> (out of 100)</p>
+                    <p><strong>Matched Skills:</strong> {% if item.matched_skills %}{{ item.matched_skills|join:", " }}{% else %}None{% endif %}</p>
+                    <p><strong>Technical Skill Match:</strong> {{ item.technical_skill_score|floatformat:2 }}</p>
+                    <p><strong>Soft Skill Score:</strong> {{ item.soft_skill_score|floatformat:2 }}</p>
+                    <p><strong>Experience Match:</strong> {{ item.experience_score|floatformat:2 }}</p>
+                    <p><strong>Keyword Relevance:</strong> {{ item.keyword_relevance_score|floatformat:2 }}</p>
+                    <p><strong>Semantic Similarity:</strong> {{ item.semantic_sim_score|floatformat:2 }}</p>
+                    <a href="{% url 'apply_job' item.job.job_id %}" class="btn btn-primary btn-sm">
+                        Apply
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No matched jobs found with a score of 50 or higher.</p>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Select all elements with class 'match-score'
+    const scoreElements = document.querySelectorAll('.match-score');
+    
+    scoreElements.forEach(element => {
+        // Get the score from the data-score attribute
+        const score = parseFloat(element.getAttribute('data-score'));
+        // Multiply by 100 and format to 2 decimal places
+        const scaledScore = (score * 100).toFixed(2);
+        // Update the element's text content
+        element.textContent = scaledScore;
+    });
+});
+</script>
+{% endblock %}

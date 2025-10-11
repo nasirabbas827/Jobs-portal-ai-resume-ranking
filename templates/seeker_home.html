@@ -2,6 +2,13 @@
 {% block title %}Available Jobs - Job Portal{% endblock %}
 {% block content %}
 <div class="container mt-5">
+
+    <div class="text-center mb-4">
+    <a href="{% url 'match_jobs_for_seeker' %}" class="btn btn-success">
+        Show Job Matches
+    </a>
+</div>
+
     <!-- Search Form -->
     <h1 class="mb-4 text-primary text-center"><i class="fas fa-search me-2"></i>Search From Available Jobs</h1>
 
