@@ -1,74 +1,115 @@
 {% extends "base.html" %}
 {% block title %}Recruiter Dashboard - Job Portal{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <!-- Welcome Section -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white d-flex align-items-center">
-            <i class="fas fa-user-tie me-2"></i>
-            <h2 class="card-title mb-0">Welcome, {{ recruiter.username }}</h2>
-        </div>
-        <div class="card-body">
-            <p class="card-text"><i class="fas fa-building me-2"></i><strong>Company:</strong> {{ recruiter.company_name }}</p>
-        </div>
+
+<div class="container my-5">
+    
+    <div class="text-center mb-5 pb-3 border-bottom">
+        <h1 class="fw-bold mb-1" style="color: var(--primary-color);">
+            <i class="bi bi-speedometer2 me-3"></i> Recruiter Dashboard
+        </h1>
+        <p class="lead text-muted">Welcome back, <strong style="color: var(--text-color);">{{ recruiter.username }}</strong>. Manage your postings and applicants efficiently.</p>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <h4><i class="fas fa-briefcase me-2"></i>Total Jobs</h4>
-                    <p class="display-5 text-primary">{{ total_jobs }}</p>
-                </div>
+    <div class="row mb-5 g-4">
+        
+        <div class="col-md-4">
+            <div class="card-form text-center p-4 h-100">
+                <h4 class="fw-bold text-uppercase text-muted small"><i class="bi bi-briefcase-fill me-2" style="color: var(--secondary-color);"></i> Total Postings</h4>
+                <p class="display-3 fw-bolder" style="color: var(--primary-color);">{{ total_jobs }}</p>
+                <a href="{% url 'job_list' %}" class="btn btn-outline-primary btn-sm mt-2"><i class="bi bi-eye-fill me-2"></i> View All Postings</a>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <h4><i class="fas fa-list-check me-2"></i>Total Applications</h4>
-                    <p class="display-5 text-primary">{{ total_applications }}</p>
-                </div>
+        
+        <div class="col-md-4">
+            <div class="card-form text-center p-4 h-100">
+                <h4 class="fw-bold text-uppercase text-muted small"><i class="bi bi-check2-circle me-2" style="color: var(--success-color);"></i> Active Listings</h4>
+                <p class="display-3 fw-bolder text-success">{{ total_active_jobs }}</p>
+                <a href="{% url 'job_create' %}" class="btn btn-success btn-sm mt-2"><i class="bi bi-plus-circle me-2"></i> Create New Job</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card-form text-center p-4 h-100">
+                <h4 class="fw-bold text-uppercase text-muted small"><i class="bi bi-list-check me-2" style="color: var(--accent-color);"></i> Total Applications</h4>
+                <p class="display-3 fw-bolder" style="color: var(--accent-color);">{{ total_applications }}</p>
+                <a href="{% url 'recruiter_applications' %}" class="btn btn-outline-primary btn-sm mt-2"><i class="bi bi-file-earmark-check-fill me-2"></i> Review Applicants</a>
             </div>
         </div>
     </div>
+    
+    <div class="row mb-5 g-4">
+        <div class="col-lg-12">
+            <div class="card-form p-4">
+                <h3 class="mb-4 pb-2 border-bottom fw-bold" style="color: var(--primary-color);">
+                    <i class="bi bi-bar-chart-fill me-2"></i> Application Status Distribution
+                </h3>
 
-    <!-- Recent Jobs -->
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white d-flex align-items-center">
-            <i class="fas fa-briefcase me-2"></i>
-            <h4 class="card-title mb-0">Recent Jobs</h4>
-        </div>
-        <div class="card-body">
-            {% if jobs %}
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col"><i class="fas fa-briefcase me-2"></i>Title</th>
-                            <th scope="col"><i class="fas fa-map-marker-alt me-2"></i>Location</th>
-                            <th scope="col"><i class="fas fa-info-circle me-2"></i>Status</th>
-                            <th scope="col"><i class="fas fa-calendar-alt me-2"></i>Posted At</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for job in jobs %}
-                        <tr>
-                            <td>{{ job.title }}</td>
-                            <td>{{ job.location }}</td>
-                            <td>{{ job.get_status_display }}</td>
-                            <td>{{ job.posted_at|date:"Y-m-d H:i" }}</td>
-                        </tr>
+                {% if total_applications > 0 %}
+                    <div class="row g-3">
+                        {% for status in status_data %}
+                            <div class="col-lg-2 col-md-4 col-6">
+                                <div class="p-3 text-center rounded border border-{{ status.color }}" style="background-color: var(--light-bg);">
+                                    <p class="mb-1 small text-muted text-uppercase fw-bold">{{ status.label }}</p>
+                                    <p class="h4 mb-0 fw-bold text-{{ status.color }}">
+                                        {{ status.count }}
+                                    </p>
+                                </div>
+                            </div>
                         {% endfor %}
-                    </tbody>
-                </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning text-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> No applications received yet across all your jobs.
+                    </div>
+                {% endif %}
             </div>
-            {% else %}
-            <div class="alert alert-info" role="alert">
-                <i class="fas fa-info-circle me-2"></i>No jobs posted yet.
-            </div>
-            {% endif %}
         </div>
+    </div>
+
+    <div class="card-form p-4">
+        
+        <h3 class="mb-4 pb-2 border-bottom fw-bold" style="color: var(--primary-color);">
+            <i class="bi bi-calendar-week-fill me-2"></i> Recent Job Postings
+        </h3>
+        
+        {% if jobs %}
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 40%;"><i class="bi bi-briefcase-fill me-2"></i>Title</th>
+                        <th scope="col" style="width: 25%;"><i class="bi bi-geo-alt-fill me-2"></i>Location</th>
+                        <th scope="col" style="width: 15%;"><i class="bi bi-activity me-2"></i>Status</th>
+                        <th scope="col" style="width: 20%;"><i class="bi bi-calendar-check-fill me-2"></i>Posted At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td class="fw-bold"><a href="{% url 'job_detail' job.job_id %}" class="text-decoration-none" style="color: var(--text-color);">{{ job.title }}</a></td>
+                        <td>{{ job.location }}</td>
+                        <td>
+                            {% if job.status == "active" %}
+                                <span class="badge bg-success"><i class="bi bi-lightning-fill"></i> Active</span>
+                            {% elif job.status == "deactivate" %}
+                                <span class="badge bg-warning text-dark">Inactive</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Closed</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ job.posted_at|date:"d M Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i> You haven't posted any jobs yet. Get started now!
+            <p class="mt-2 mb-0"><a href="{% url 'job_create' %}" class="alert-link fw-bold" style="color: var(--primary-color);">Post Your First Job</a></p>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

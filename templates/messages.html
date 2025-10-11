@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Messages with {{ other_user.username }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <div class="text-center mb-5 pb-3 border-bottom">
+        <h1 class="fw-bold mb-1" style="color: var(--primary-color);">
+            <i class="bi bi-chat-dots-fill me-3"></i> Conversation with {{ other_user.username }}
+        </h1>
+        <p class="lead text-muted">A private channel for discussing jobs and applications.</p>
+    </div>
+
+    <div class="card-form p-4 mb-4" style="max-height: 500px; overflow-y: auto;">
+        
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="d-flex mb-3 justify-content-start">
+                    <div class="d-inline-flex flex-column" style="max-width: 75%;">
+                        
+                        <div class="p-3 rounded-3 shadow-sm bg-light border me-auto" style="word-wrap: break-word;">
+                            <p class="mb-1 fw-medium">{{ msg.body|linebreaksbr }}</p>
+                        </div>
+                        
+                        <small class="text-muted mt-1 px-1 text-start">
+                            <i class="bi bi-clock me-1"></i> {{ msg.sent_at|date:"H:i" }} | {{ msg.sent_at|date:"M d" }}
+                        </small>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i> No messages yet. Start the conversation!
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card-form p-4">
+        <h4 class="mb-3 fw-bold">
+            <i class="bi bi-pencil-square me-2" style="color: var(--primary-color);"></i> Send a Reply
+        </h4>
+        <form method="post" class="d-flex align-items-end">
+            {% csrf_token %}
+            <div class="flex-grow-1 me-2">
+                {{ form.body }}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg flex-shrink-0" style="background-color: var(--accent-color); border-color: var(--accent-color);">
+                <i class="bi bi-send-fill"></i> Send
+            </button>
+        </form>
+        
+        {% if form.body.errors %}
+            <div class="text-danger small mt-2">{{ form.body.errors }}</div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageList = document.querySelector('.card-form[style*="overflow-y"]');
+        if (messageList) {
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+    });
+</script>
+{% endblock %}

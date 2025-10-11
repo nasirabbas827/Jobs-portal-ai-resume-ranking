@@ -1,66 +1,74 @@
 {% extends "base.html" %}
 {% block title %}Job Portal - Find Your Dream Job{% endblock %}
 {% block content %}
-<!-- Hero Section -->
+
 <div class="hero-section">
     <div class="container text-center">
-        <h1 class="display-4 mb-3"><i class="fas fa-briefcase me-2"></i>Welcome to Job Portal</h1>
-        <p class="lead mb-4">Connect with top employers or find the perfect candidate for your company. Start your journey today!</p>
+        <h1 class="mb-3"><i class="bi bi-briefcase-fill me-3"></i>Welcome to Job Portal</h1>
+        <p class="lead mb-4" style="color: rgba(255, 255, 255, 0.9);">
+            Connect with top employers or find the perfect candidate for your company. Start your journey today!
+        </p>
+
         {% if request.session.user_type == "seeker" %}
-            <p class="mb-4">You are logged in as <strong>Job Seeker</strong>.</p>
-            <a href="{% url 'seeker_home' %}" class="btn btn-primary btn-lg"><i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard</a>
+            <p class="mb-4" style="font-size: 1.15rem;">You are logged in as <strong>Job Seeker</strong>.</p>
+            <a href="{% url 'seeker_home' %}" class="btn btn-light btn-lg text-primary"><i class="bi bi-speedometer2 me-2"></i>Go to Seeker Dashboard</a>
         {% elif request.session.user_type == "recruiter" %}
-            <p class="mb-4">You are logged in as <strong>Recruiter</strong>.</p>
-            <a href="{% url 'recruiter_home' %}" class="btn btn-primary btn-lg"><i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard</a>
+            <p class="mb-4" style="font-size: 1.15rem;">You are logged in as <strong>Recruiter</strong>.</p>
+            <a href="{% url 'recruiter_home' %}" class="btn btn-light btn-lg text-primary"><i class="bi bi-speedometer2 me-2"></i>Go to Recruiter Dashboard</a>
         {% else %}
-            <p class="mb-4">Join our platform to explore opportunities or hire talent.</p>
-            <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-2"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
-            <a href="{% url 'register_seeker' %}" class="btn btn-success btn-lg me-2"><i class="fas fa-user-plus me-2"></i>Register as Job Seeker</a>
-            <a href="{% url 'register_recruiter' %}" class="btn btn-success btn-lg"><i class="fas fa-user-tie me-2"></i>Register as Recruiter</a>
+            <p class="mb-4" style="font-size: 1.15rem;">Join our platform to explore opportunities or hire talent.</p>
+            <a href="{% url 'login' %}" class="btn btn-light btn-lg me-3"><i class="bi bi-box-arrow-in-right me-2"></i>Login</a>
+            
+            <a href="{% url 'register_seeker' %}" class="btn btn-success btn-lg me-3"><i class="bi bi-person-plus-fill me-2"></i>Register as Job Seeker</a>
+            <a href="{% url 'register_recruiter' %}" class="btn btn-primary btn-lg"><i class="bi bi-person-badge-fill me-2"></i>Register as Recruiter</a>
         {% endif %}
     </div>
 </div>
 
-<!-- Features Section -->
-<div class="container my-5">
-    <h2 class="text-center mb-4"><i class="fas fa-star me-2"></i>Why Choose Job Portal?</h2>
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-search fa-2x mb-3 text-primary"></i>
-                    <h4 class="card-title">Find Jobs Easily</h4>
-                    <p class="card-text">Browse thousands of job listings tailored to your skills and preferences, with advanced search filters.</p>
+<div class="container my-5 py-3">
+    <h2 class="text-center mb-5 fw-bold" style="color: var(--primary-color);"><i class="bi bi-star-fill me-3"></i>Why Choose Job Portal?</h2>
+    <div class="row justify-content-center">
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm h-100 feature-card">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-search-heart-fill display-3 mb-3" style="color: var(--secondary-color);"></i>
+                    <h4 class="card-title fw-bold" style="color: var(--text-color);">Find Jobs Easily</h4>
+                    <p class="card-text text-muted">Browse thousands of job listings tailored to your skills and preferences, with advanced search filters.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-file-upload fa-2x mb-3 text-primary"></i>
-                    <h4 class="card-title">Upload Your Resume</h4>
-                    <p class="card-text">Showcase your skills and experience with an easy-to-use resume upload and ranking system.</p>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm h-100 feature-card">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-file-earmark-arrow-up-fill display-3 mb-3" style="color: var(--secondary-color);"></i>
+                    <h4 class="card-title fw-bold" style="color: var(--text-color);">Boost Your Resume</h4>
+                    <p class="card-text text-muted">Showcase your skills and experience with an easy-to-use resume upload and ranking system.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-users fa-2x mb-3 text-primary"></i>
-                    <h4 class="card-title">Hire Top Talent</h4>
-                    <p class="card-text">Recruiters can post jobs, manage applications, and connect with qualified candidates effortlessly.</p>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm h-100 feature-card">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-people-fill display-3 mb-3" style="color: var(--secondary-color);"></i>
+                    <h4 class="card-title fw-bold" style="color: var(--text-color);">Hire Top Talent</h4>
+                    <p class="card-text text-muted">Recruiters can post jobs, manage applications, and connect with qualified candidates effortlessly.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Call to Action Section -->
-<div class="bg-light py-5">
+<hr class="my-5">
+
+<div class="py-5" style="background-color: var(--light-bg);"> 
     <div class="container text-center">
-        <h3 class="mb-3">Ready to Get Started?</h3>
-        <p class="mb-4">Whether you're seeking your dream job or looking to hire the best, Job Portal is here to help.</p>
-        <a href="{% url 'login' %}" class="btn btn-primary btn-lg"><i class="fas fa-briefcase me-2"></i>Explore Jobs Now</a>
+        <h3 class="mb-3 fw-bold" style="color: var(--primary-color);">Ready to Take the Next Step?</h3>
+        <p class="lead mb-4 text-muted">Whether you're seeking your dream job or looking to hire the best, Job Portal is here to help.</p>
+        
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-2"><i class="bi bi-box-arrow-in-right me-2"></i>Find Opportunities Now</a>
     </div>
 </div>
 {% endblock %}

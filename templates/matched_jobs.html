@@ -1,47 +1,87 @@
 {% extends "base.html" %}
-{% block title %}Matched Jobs{% endblock %}
+{% block title %}Matched Jobs - Job Portal{% endblock %}
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4">Jobs Matched For You</h2>
+
+<div class="container my-5">
+    
+    <div class="text-center mb-5 pb-3 border-bottom">
+        <h1 class="fw-bold mb-1" style="color: var(--primary-color);">
+            <i class="bi bi-stars me-2"></i> Jobs Matched For You
+        </h1>
+        <p class="lead text-muted">Discover the opportunities that best fit your profile and skills.</p>
+    </div>
 
     {% if ranked_jobs %}
-        {% for item in ranked_jobs %}
-            <div class="card mb-3 shadow-sm">
-                <div class="card-body">
-                    <h4>{{ item.job.title }}</h4>
-                    <p><strong>Company:</strong> {{ item.job.recruiter.company.name }}</p>
-                    <p><strong>Location:</strong> {{ item.job.location }}</p>
-                    <p><strong>Match Score:</strong> <span class="match-score" data-score="{{ item.score|floatformat:2 }}">{{ item.score|floatformat:2 }}</span> (out of 100)</p>
-                    <p><strong>Matched Skills:</strong> {% if item.matched_skills %}{{ item.matched_skills|join:", " }}{% else %}None{% endif %}</p>
-                    <p><strong>Technical Skill Match:</strong> {{ item.technical_skill_score|floatformat:2 }}</p>
-                    <p><strong>Soft Skill Score:</strong> {{ item.soft_skill_score|floatformat:2 }}</p>
-                    <p><strong>Experience Match:</strong> {{ item.experience_score|floatformat:2 }}</p>
-                    <p><strong>Keyword Relevance:</strong> {{ item.keyword_relevance_score|floatformat:2 }}</p>
-                    <p><strong>Semantic Similarity:</strong> {{ item.semantic_sim_score|floatformat:2 }}</p>
-                    <a href="{% url 'apply_job' item.job.job_id %}" class="btn btn-primary btn-sm">
-                        Apply
-                    </a>
+        <div class="row g-4">
+            {% for item in ranked_jobs %}
+                <div class="col-lg-6 col-md-12">
+                    <div class="card-form p-4 d-flex flex-column h-100">
+                        
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h4 class="fw-bold mb-0" style="color: var(--primary-color);">
+                                <a href="{% url 'apply_job' item.job.job_id %}" class="text-decoration-none" style="color: inherit;">
+                                    {{ item.job.title }}
+                                </a>
+                            </h4>
+                            
+                            <div class="d-flex align-items-center">
+                                <span class="badge py-2 px-3 fw-bold fs-6" style="background-color: var(--secondary-color); color: white;">
+                                    <span class="match-score" data-score="{{ item.score|floatformat:2 }}">
+                                        </span>% Match
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 text-muted">
+                            <p class="mb-1"><i class="bi bi-building-fill me-2"></i><strong>Company:</strong> {{ item.job.recruiter.company.name }}</p>
+                            <p class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i><strong>Location:</strong> {{ item.job.location }}</p>
+                        </div>
+                        
+                        <div class="mt-auto pt-3 border-top">
+                            <a href="{% url 'apply_job' item.job.job_id %}" class="btn btn-primary w-100">
+                                <i class="bi bi-send-fill me-2"></i> Apply Now
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     {% else %}
-        <p>No matched jobs found with a score of 50 or higher.</p>
+        <div class="alert alert-info text-center p-4" role="alert">
+            <h4 class="alert-heading"><i class="bi bi-info-circle-fill me-2"></i> No High Matches Found</h4>
+            <p>We couldn't find any job matches with a score of 50 or higher.</p>
+            <p class="mb-0">Try updating your resume or job preferences to find better opportunities!</p>
+        </div>
     {% endif %}
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Select all elements with class 'match-score'
-    const scoreElements = document.querySelectorAll('.match-score');
-    
-    scoreElements.forEach(element => {
-        // Get the score from the data-score attribute
-        const score = parseFloat(element.getAttribute('data-score'));
-        // Multiply by 100 and format to 2 decimal places
-        const scaledScore = (score * 100).toFixed(2);
-        // Update the element's text content
-        element.textContent = scaledScore;
-    });
+    // Select all elements with class 'match-score'
+    const scoreElements = document.querySelectorAll('.match-score');
+    
+    scoreElements.forEach(element => {
+        // Get the score from the data-score attribute
+        const score = parseFloat(element.getAttribute('data-score'));
+        // Multiply by 100 and format to 2 decimal places
+        const scaledScore = (score * 100).toFixed(2);
+        // Update the element's text content
+        element.textContent = scaledScore;
+
+        // OPTIONAL: Add a dynamic color class based on the score (using the scaled score)
+        const parentBadge = element.closest('.badge');
+        const percentage = parseFloat(scaledScore);
+
+        if (parentBadge) {
+            if (percentage >= 75) {
+                parentBadge.style.backgroundColor = 'var(--success-color)'; // Green
+            } else if (percentage >= 50) {
+                // Keep var(--secondary-color) (or set explicitly)
+            } else {
+                parentBadge.style.backgroundColor = 'var(--accent-color)'; // Fallback/Orange
+            }
+        }
+    });
 });
 </script>
 {% endblock %}

@@ -1,24 +1,47 @@
 {% extends "base.html" %}
 {% block title %}Upload/Edit Resume - Job Portal{% endblock %}
 {% block content %}
-<div class="container mt-5">
+
+<div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex align-items-center">
-                    <i class="fas fa-file-upload me-2"></i>
-                    <h2 class="card-title mb-0">Upload / Edit Resume</h2>
+        <div class="col-lg-6 col-md-8">
+            
+            <div class="card-form p-4">
+                
+                <div class="text-center mb-4 pb-2 border-bottom">
+                    <h2 class="fw-bold mb-1" style="color: var(--primary-color);">
+                        <i class="bi bi-file-earmark-arrow-up-fill me-2"></i> Upload / Edit Resume
+                    </h2>
+                    <p class="text-muted">Upload your latest resume to be visible to recruiters and matched with jobs.</p>
                 </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="{{ form.file_path.id_for_label }}" class="form-label"><i class="fas fa-file-pdf me-2"></i>Resume File</label>
-                            {{ form.file_path }}
+                
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.file_path.id_for_label }}" class="form-label">
+                            <i class="bi bi-file-pdf-fill me-2"></i>Select Resume File (PDF only)
+                        </label>
+                        {{ form.file_path }}
+                    </div>
+                    
+                    {% comment %} Add a hint if a file is already uploaded {% endcomment %}
+                    {% if form.file_path.value and form.file_path.value.url %}
+                        <div class="alert alert-info small" role="alert">
+                            <i class="bi bi-info-circle-fill me-1"></i> Current Resume: 
+                            <a href="{{ form.file_path.value.url }}" target="_blank" class="alert-link text-decoration-none fw-bold" style="color: var(--primary-color);">View File</a>. Uploading a new file will replace the current one.
                         </div>
-                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save me-2"></i>Save Resume</button>
-                    </form>
-                </div>
+                    {% else %}
+                         <div class="alert alert-warning small" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> You have not uploaded a resume yet.
+                        </div>
+                    {% endif %}
+                    
+                    <button type="submit" class="btn btn-primary w-100 py-2 mt-3">
+                        <i class="bi bi-cloud-arrow-up-fill me-2"></i> Save Resume
+                    </button>
+
+                </form>
             </div>
         </div>
     </div>

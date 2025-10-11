@@ -1,32 +1,56 @@
 {% extends "base.html" %}
 {% block title %}Login - Job Portal{% endblock %}
 {% block content %}
-<div class="container mt-5">
+
+<div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex align-items-center">
-                    <i class="fas fa-sign-in-alt me-2"></i>
-                    <h2 class="card-title mb-0">Login</h2>
+        <div class="col-lg-5 col-md-8">
+            
+            <div class="card-form p-4">
+                
+                <div class="text-center mb-4 pb-2 border-bottom">
+                    <h2 class="fw-bold mb-1" style="color: var(--primary-color);">
+                        <i class="bi bi-box-arrow-in-right me-2"></i> User Login
+                    </h2>
+                    <p class="text-muted">Sign in to access your dashboard.</p>
                 </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label"><i class="fas fa-user me-2"></i>Username</label>
-                            {{ form.username }}
-                        </div>
-                        <div class="mb-3">
-                            <label for="{{ form.password.id_for_label }}" class="form-label"><i class="fas fa-lock me-2"></i>Password</label>
-                            {{ form.password }}
-                        </div>
-                        <div class="mb-3">
-                            <label for="{{ form.user_type.id_for_label }}" class="form-label"><i class="fas fa-user-tag me-2"></i>User Type</label>
-                            {{ form.user_type }}
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-sign-in-alt me-2"></i>Login</button>
-                    </form>
-                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">
+                            <i class="bi bi-person-fill me-2"></i>Username
+                        </label>
+                        {{ form.username }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">
+                            <i class="bi bi-lock-fill me-2"></i>Password
+                        </label>
+                        {{ form.password }}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.user_type.id_for_label }}" class="form-label">
+                            <i class="bi bi-person-circle me-2"></i>Login As
+                        </label>
+                        {{ form.user_type }}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 py-2">
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Login
+                    </button>
+
+                    <div class="text-center mt-3">
+                        <p class="mb-1 text-muted">Don't have an account?</p>
+                        <a href="{% url 'register_seeker' %}" class="me-3" style="color: var(--accent-color); font-weight: 600;">Register as Seeker</a>
+                        |
+                        <a href="{% url 'register_recruiter' %}" class="ms-3" style="color: var(--primary-color); font-weight: 600;">Register as Recruiter</a>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>

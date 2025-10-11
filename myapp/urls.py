@@ -19,5 +19,10 @@ urlpatterns = [
     path('seeker/applications/', views.my_applications, name='my_applications'),
     path('seeker/resume-ranking/', views.resume_ranking, name="resume_ranking"),
     path('seeker/job-matches/', views.match_jobs_for_seeker, name='match_jobs_for_seeker'),
+    path('recruiter/applications/', views.recruiter_applications, name='recruiter_applications'),
+    path('recruiter/applications/update/<int:application_id>/', views.update_application_status, name='update_application_status'),
+    path('job/<int:job_id>/details/', views.job_detail, name='job_detail'),
+    path('messages/<int:application_id>/', views.send_message, name='send_message'),
+
 
 ]

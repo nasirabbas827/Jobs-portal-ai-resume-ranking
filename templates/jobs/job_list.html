@@ -1,54 +1,73 @@
 {% extends "base.html" %}
 {% block title %}My Job Listings - Job Portal{% endblock %}
 {% block content %}
-<div class="container mt-5">
+
+<div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-briefcase me-2"></i>
-                        <h2 class="card-title mb-0">My Job Listings</h2>
-                    </div>
-                    <a href="{% url 'job_create' %}" class="btn btn-success btn-sm"><i class="fas fa-plus me-2"></i>Post New Job</a>
+        <div class="col-lg-12 col-md-12">
+            
+                
+                <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
+                    <h2 class="fw-bold mb-0" style="color: var(--primary-color);">
+                        <i class="bi bi-list-columns-reverse me-2"></i> My Job Listings
+                    </h2>
+                    <a href="{% url 'job_create' %}" class="btn btn-lg" style="background-color: var(--accent-color); border-color: var(--accent-color); color: white;">
+                        <i class="bi bi-plus-circle-fill me-2"></i> Post New Job
+                    </a>
                 </div>
-                <div class="card-body">
-                    {% if jobs %}
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col"><i class="fas fa-briefcase me-2"></i>Title</th>
-                                    <th scope="col"><i class="fas fa-tools me-2"></i>Skills</th>
-                                    <th scope="col"><i class="fas fa-suitcase me-2"></i>Type</th>
-                                    <th scope="col"><i class="fas fa-info-circle me-2"></i>Status</th>
-                                    <th scope="col"><i class="fas fa-map-marker-alt me-2"></i>Location</th>
-                                    <th scope="col"><i class="fas fa-cog me-2"></i>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for job in jobs %}
-                                <tr>
-                                    <td>{{ job.title }}</td>
-                                    <td>{{ job.skills }}</td>
-                                    <td>{{ job.get_employment_type_display }}</td>
-                                    <td>{{ job.status }}</td>
-                                    <td>{{ job.location }}</td>
-                                    <td>
-                                        <a href="{% url 'job_update' job.job_id %}" class="btn btn-primary btn-sm"><i class="fas fa-edit me-1"></i>Edit</a>
-                                        <a href="{% url 'job_delete' job.job_id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash me-1"></i>Delete</a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% else %}
-                    <div class="alert alert-info" role="alert">
-                        <i class="fas fa-info-circle me-2"></i>No jobs posted yet.
-                    </div>
-                    {% endif %}
+                
+                {% if jobs %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 25%;"><i class="bi bi-briefcase-fill me-2"></i>Title</th>
+                                <th scope="col" style="width: 20%;"><i class="bi bi-tools me-2"></i>Skills</th>
+                                <th scope="col" style="width: 10%;"><i class="bi bi-person-badge-fill me-2"></i>Type</th>
+                                <th scope="col" style="width: 10%;"><i class="bi bi-activity me-2"></i>Status</th>
+                                <th scope="col" style="width: 15%;"><i class="bi bi-geo-alt-fill me-2"></i>Location</th>
+                                <th scope="col" style="width: 20%;"><i class="bi bi-gear-fill me-2"></i>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in jobs %}
+                            <tr>
+                                <td class="fw-bold">{{ job.title }}</td>
+                                <td>{{ job.skills|truncatewords:5 }}</td>
+                                <td>{{ job.get_employment_type_display }}</td>
+                                <td>
+    {% if job.status == "active" %}
+        <span class="badge bg-success">Active</span>
+    {% elif job.status == "closed" %}
+        <span class="badge bg-secondary">Closed</span>
+    {% elif job.status == "deactivate" %}
+        <span class="badge bg-warning text-dark">Deactivated</span>
+    {% else %}
+        <span class="badge bg-dark">Unknown</span>
+    {% endif %}
+</td>
+
+                                <td>{{ job.location }}</td>
+                                <td>
+                                    <a href="{% url 'job_update' job.job_id %}" class="btn btn-primary btn-sm me-1" title="Edit Job">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a href="{% url 'job_delete' job.job_id %}" class="btn btn-danger btn-sm" title="Delete Job">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
+                {% else %}
+                <div class="alert alert-info text-center" role="alert">
+                    <h4 class="alert-heading"><i class="bi bi-info-circle-fill me-2"></i> No Job Listings Found</h4>
+                    <p>It looks like you haven't posted any jobs yet. Start hiring today!</p>
+                    <a href="{% url 'job_create' %}" class="btn btn-primary mt-2">Post Your First Job</a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

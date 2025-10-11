@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}{{ job.title }} - Job Details{% endblock %}
+{% block content %}
+
+<div class="container my-5">
+
+    <div class="text-center mb-5 pb-3 border-bottom">
+        <h1 class="fw-bold mb-1" style="color: var(--primary-color);">
+            <i class="bi bi-briefcase-fill me-2"></i> {{ job.title }}
+        </h1>
+        <p class="lead text-muted">
+            <i class="bi bi-building"></i> {{ job.recruiter.company.name }} &nbsp; | &nbsp;
+            <i class="bi bi-geo-alt"></i> {{ job.location }} &nbsp; | &nbsp;
+            <span class="badge rounded-pill" style="background-color: var(--secondary-color); color: white;">
+                {{ job.get_employment_type_display }}
+            </span>
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card-form p-4 h-100">
+
+                <div class="mb-4">
+                    <h4 class="fw-bold pb-2 border-bottom"><i class="bi bi-file-earmark-text-fill me-2"></i> Job Description</h4>
+                    <p>{{ job.description|linebreaks }}</p>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="fw-bold pb-2 border-bottom"><i class="bi bi-list-check me-2"></i> Key Requirements</h4>
+                    <p>{{ job.requirements|linebreaks }}</p>
+                </div>
+
+{% if skills_list %}
+<div class="mb-0">
+    <h4 class="fw-bold pb-2 border-bottom"><i class="bi bi-tools me-2"></i> Skills Required</h4>
+    <ul class="list-unstyled row g-2">
+        {% for skill in skills_list %}
+            <li class="col-sm-6">
+                <span class="badge bg-light text-dark border p-2 w-100 text-start">
+                    <i class="bi bi-tag-fill me-1" style="color: var(--accent-color);"></i> {{ skill }}
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card-form p-4 sticky-top" style="top: 1rem;">
+
+                <h4 class="fw-bold pb-2 border-bottom mb-3" style="color: var(--primary-color);">
+                    <i class="bi bi-info-circle-fill me-2"></i> Quick Details
+                </h4>
+
+                <div class="d-flex justify-content-between align-items-center mb-3 p-2 rounded" style="background-color: var(--light-bg);">
+                    <p class="mb-0 fw-bold"><i class="bi bi-currency-dollar me-2" style="color: var(--success-color);"></i> Salary Range:</p>
+                    <span class="fw-bold text-success">{{ job.salary_range }}</span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4 p-2 rounded" style="background-color: var(--light-bg);">
+                    <p class="mb-0 fw-bold"><i class="bi bi-calendar-check-fill me-2"></i> Posted:</p>
+                    <span class="text-muted text-end">
+                        {{ job.posted_at|date:"d M Y" }} <br>
+                        <small>({{ job.posted_at|timesince }} ago)</small>
+                    </span>
+                </div>
+
+                <form method="post" action="{% url 'apply_job' job.job_id %}" class="mt-4 pt-4 border-top">
+    {% csrf_token %}
+    
+    {% if job.status == 'active' %}
+        <button type="submit" class="btn btn-primary btn-lg w-100">
+            <i class="bi bi-send-fill me-2"></i> Apply Now
+        </button>
+    {% else %}
+        <button type="button" class="btn btn-secondary btn-lg w-100" disabled>
+            <i class="bi bi-x-circle me-2"></i>
+            {% if job.status == 'deactivate' %}Not Accepting Applications{% endif %}
+            {% if job.status == 'closed' %}Applications Closed{% endif %}
+        </button>
+    {% endif %}
+</form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

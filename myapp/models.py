@@ -67,7 +67,7 @@ class Job(models.Model):
     description = models.TextField()
     requirements = models.TextField()
 
-    # ✅ NEW FIELD: comma-separated skills
+    # NEW FIELD: comma-separated skills
     skills = models.TextField(
         blank=True,
         null=True,
@@ -124,3 +124,17 @@ class ParsedResume(models.Model):
 
     def __str__(self):
         return f"Parsed Resume of {self.resume.seeker.username}"
+
+
+class Communication(models.Model):
+
+    application = models.ForeignKey(
+        Application,
+        on_delete=models.CASCADE,
+        related_name="communications"
+    )
+    body = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Message for Application #{self.application.application_id}"

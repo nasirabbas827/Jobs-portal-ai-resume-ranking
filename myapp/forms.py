@@ -70,7 +70,16 @@ class CompanyForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['title', 'description', 'requirements', 'skills', 'location', 'salary_range', 'employment_type']
+        fields = [
+            'title',
+            'description',
+            'requirements',
+            'skills',
+            'location',
+            'salary_range',
+            'employment_type',
+            'status'
+        ]
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
@@ -84,6 +93,7 @@ class JobForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'salary_range': forms.TextInput(attrs={'class': 'form-control'}),
             'employment_type': forms.Select(attrs={'class': 'form-select'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
 
@@ -94,3 +104,20 @@ class ApplicationForm(forms.ModelForm):
         widgets = {
             'resume': forms.Select(attrs={'class': 'form-select'}),
         }
+
+
+from django import forms
+from .models import Communication
+
+class CommunicationForm(forms.ModelForm):
+    class Meta:
+        model = Communication
+        fields = ["body"]
+        widgets = {
+            'body': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Type your message here...'
+            }),
+        }
+

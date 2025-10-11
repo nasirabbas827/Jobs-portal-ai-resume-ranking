@@ -1,23 +1,65 @@
 {% extends "base.html" %}
 {% block title %}Resume Ranking - Job Portal{% endblock %}
 {% block content %}
-<div class="container mt-5">
+
+<div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex align-items-center">
-                    <i class="fas fa-ranking-star me-2"></i>
-                    <h2 class="card-title mb-0">Resume Ranking</h2>
+        <div class="col-lg-8 col-md-10">
+            
+            <div class="card-form p-4">
+                
+                <div class="text-center mb-4 pb-3 border-bottom">
+                    <h2 class="fw-bold mb-1" style="color: var(--primary-color);">
+                        <i class="bi bi-graph-up-arrow me-2"></i> Your Resume Analysis
+                    </h2>
+                    <p class="text-muted">Review the data extracted from your resume for job matching and ranking.</p>
                 </div>
-                <div class="card-body">
-                    <p class="card-text"><i class="fas fa-user me-2"></i><strong>Name:</strong> {{ parsed_resume.full_name }}</p>
-                    <p class="card-text"><i class="fas fa-envelope me-2"></i><strong>Email:</strong> {{ parsed_resume.email }}</p>
-                    <p class="card-text"><i class="fas fa-phone me-2"></i><strong>Phone:</strong> {{ parsed_resume.phone }}</p>
-                    <p class="card-text"><i class="fas fa-tools me-2"></i><strong>Skills:</strong> {{ parsed_resume.skills }}</p>
-                    <p class="card-text"><i class="fas fa-graduation-cap me-2"></i><strong>Education:</strong><br>{{ parsed_resume.education|linebreaks }}</p>
-                    <p class="card-text"><i class="fas fa-briefcase me-2"></i><strong>Work Experience:</strong><br>{{ parsed_resume.work_experience|linebreaks }}</p>
-                    <p class="card-text"><i class="fas fa-clock me-2"></i><strong>Total Years of Experience:</strong> {{ parsed_resume.years_of_experience }}</p>
-                    <p class="card-text"><i class="fas fa-tags me-2"></i><strong>Keywords:</strong> {{ parsed_resume.keywords }}</p>
+                
+                <div class="p-3">
+                    
+                    <h4 class="mb-3 text-secondary"><i class="bi bi-person-lines-fill me-2"></i> Personal Information</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <p class="mb-0"><strong><i class="bi bi-person-fill me-2"></i>Name:</strong></p>
+                            <p class="text-dark fw-bold">{{ parsed_resume.full_name }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="mb-0"><strong><i class="bi bi-envelope-fill me-2"></i>Email:</strong></p>
+                            <p class="text-dark fw-bold">{{ parsed_resume.email }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="mb-0"><strong><i class="bi bi-telephone-fill me-2"></i>Phone:</strong></p>
+                            <p class="text-dark fw-bold">{{ parsed_resume.phone }}</p>
+                        </div>
+                    </div>
+
+                    <h4 class="mb-3 text-secondary border-top pt-3"><i class="bi bi-lightbulb-fill me-2"></i> Experience & Skills</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <p class="mb-0"><strong><i class="bi bi-clock-history me-2"></i>Total Experience:</strong></p>
+                            <p class="text-dark">{{ parsed_resume.years_of_experience }} Years</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-0"><strong><i class="bi bi-tags-fill me-2"></i>Keywords:</strong></p>
+                            <p class="text-dark">{{ parsed_resume.keywords }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="mb-1"><strong><i class="bi bi-tools me-2"></i>Skills:</strong></p>
+                        <p class="text-dark">{{ parsed_resume.skills }}</p>
+                    </div>
+
+                    <h4 class="mb-3 text-secondary border-top pt-3"><i class="bi bi-briefcase-fill me-2"></i> Work History</h4>
+                    <div class="mb-4 text-dark resume-section" style="white-space: pre-wrap;">
+                        {{ parsed_resume.work_experience|linebreaks }}
+                    </div>
+
+                    <h4 class="mb-3 text-secondary border-top pt-3"><i class="bi bi-mortarboard-fill me-2"></i> Education</h4>
+                    <div class="mb-4 text-dark resume-section" style="white-space: pre-wrap;">
+                        {{ parsed_resume.education|linebreaks }}
+                    </div>
+                    
                 </div>
             </div>
         </div>
